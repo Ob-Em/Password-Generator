@@ -1,9 +1,13 @@
 package main;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Random;
 
 public class MyFrame extends Frame implements ActionListener{
 
+	TextField t1;
+	TextField t2;
+	
 	public MyFrame() 
 	{	
 		this.setLayout(new GridBagLayout());
@@ -36,7 +40,7 @@ public class MyFrame extends Frame implements ActionListener{
 		gbc.gridx = 1;
 		gbc.gridy = 1;
 		gbc.anchor = GridBagConstraints.WEST;
-		TextField t1 = new TextField("12");
+		t1 = new TextField("12");
 		this.add(t1,gbc);
 		
 		gbc = new GridBagConstraints();
@@ -75,7 +79,7 @@ public class MyFrame extends Frame implements ActionListener{
 		gbc.gridy = 5;
 		gbc.ipadx = 100;
 		gbc.anchor = GridBagConstraints.WEST;
-		TextField t2 = new TextField("");
+		t2 = new TextField("");
 		t2.setEditable(false);
 		this.add(t2,gbc);
 		
@@ -90,10 +94,51 @@ public class MyFrame extends Frame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if(e.getActionCommand()=="gen") 
 		{
-			//t1.setText("SampleText");
+			
+			String retval = "";
+			
+			int lenght = Integer.parseInt(t1.getText());
+			
+			for(int i = 0;i < lenght;i++) 
+			{
+				retval = retval + String.valueOf(genChar(false,false,false));
+			}
+			
+			
+			t2.setText(retval);
 		}else if(e.getActionCommand()=="copy") 
 		{
 			
 		}
+	}
+	
+	private char genChar(boolean includesigns,boolean includenumbers,boolean includeuppercase) 
+	{
+		char retval = ' ';
+		
+		Random my_rand = new Random();
+		my_rand.setSeed(System.nanoTime());
+		int r_value = my_rand.nextInt();
+		int my_mod = 123-97;
+		if(includesigns) 
+		{
+			my_mod = my_mod + 32 - 47;
+		}
+		
+		if(includenumbers) 
+		{
+			my_mod = my_mod + 48 - 58;
+		}
+		
+		if(includeuppercase) 
+		{
+			my_mod = my_mod + 41 - 91;
+		}
+		
+		r_value = r_value % my_mod;
+		
+		retval = (char)(r_value + 97);
+		
+		return retval;
 	}
 }
